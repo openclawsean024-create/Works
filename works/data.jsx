@@ -1,4 +1,16 @@
 // WORKS — Shared site data
+//
+// ═══════════════════════════════════════════════════════
+// 如何新增案例圖片：
+//   1. 把圖片放到 images/cases/ 資料夾（建議 800×1000px, JPG/WebP）
+//   2. 在下方 cases 陣列對應項目加上 img: 'images/cases/你的檔名.jpg'
+//   3. 支援外部網址，例如 img: 'https://example.com/photo.jpg'
+//   4. 不填 img（或 img: null）則顯示佔位格
+//
+// 如何新增案例：
+//   複製任一行，貼到 cases 陣列最前面，填入資料即可。
+//   cat 可用：BRAND / CAMPUS / CONCERT / EVENT / AUCTION
+// ═══════════════════════════════════════════════════════
 
 const WORKS_DATA = {
   brand: {
@@ -60,18 +72,19 @@ const WORKS_DATA = {
     { num: '07', zh: '燈光音響',  en: 'Lighting & Sound',      kw: ['Moving light', 'Line array', '操作工程師', '租賃'] },
   ],
   cases: [
-    { num: '0101', year: '2026', cat: 'CAMPUS',   zh: '新竹陽明交通大學春季校園博覽會', en: 'NYCU Spring Career Fair' },
-    { num: '0102', year: '2026', cat: 'BRAND',    zh: 'WBC × Foodpanda 推廣活動',         en: 'WBC × Foodpanda Activation' },
-    { num: '0103', year: '2026', cat: 'EVENT',    zh: '嘉義燈節 — 中華電信主攤位',        en: 'Chiayi Lantern Festival × CHT' },
-    { num: '0104', year: '2026', cat: 'BRAND',    zh: '台北花伴野餐',                      en: 'Taipei Picnic with Flowers' },
-    { num: '0105', year: '2025', cat: 'CONCERT',  zh: 'Super Junior 20 周年快閃櫃',         en: 'Super Junior 20th Pop-up' },
-    { num: '0106', year: '2025', cat: 'BRAND',    zh: 'DCARD × 洽洽瓜子年貨大展派樣',       en: 'DCARD × Chacheer Sampling' },
-    { num: '0107', year: '2025', cat: 'CAMPUS',   zh: 'Dcard 開學季校園巡迴活動',           en: 'Dcard Campus Tour' },
-    { num: '0108', year: '2025', cat: 'EVENT',    zh: '抽抽一番賞線下推廣活動',             en: 'Ichiban Kuji Promo Tour' },
-    { num: '0109', year: '2024', cat: 'BRAND',    zh: '安麗體驗日（巡迴）',                 en: 'Amway Experience Day Tour' },
-    { num: '0110', year: '2024', cat: 'AUCTION',  zh: '藝術品拍賣會',                       en: 'Fine Art Auction' },
-    { num: '0111', year: '2024', cat: 'EVENT',    zh: '全美親子運動會',                     en: 'All-American Family Sports Day' },
-    { num: '0112', year: '2023', cat: 'CAMPUS',   zh: 'Dcard × VOLVO 校園活動',             en: 'Dcard × VOLVO Campus' },
+    // img: 'images/cases/檔名.jpg'  ← 填圖片路徑；不填則顯示佔位格
+    { num: '0101', year: '2026', cat: 'CAMPUS',   img: null, zh: '新竹陽明交通大學春季校園博覽會', en: 'NYCU Spring Career Fair' },
+    { num: '0102', year: '2026', cat: 'BRAND',    img: null, zh: 'WBC × Foodpanda 推廣活動',       en: 'WBC × Foodpanda Activation' },
+    { num: '0103', year: '2026', cat: 'EVENT',    img: null, zh: '嘉義燈節 — 中華電信主攤位',      en: 'Chiayi Lantern Festival × CHT' },
+    { num: '0104', year: '2026', cat: 'BRAND',    img: null, zh: '台北花伴野餐',                    en: 'Taipei Picnic with Flowers' },
+    { num: '0105', year: '2025', cat: 'CONCERT',  img: null, zh: 'Super Junior 20 周年快閃櫃',      en: 'Super Junior 20th Pop-up' },
+    { num: '0106', year: '2025', cat: 'BRAND',    img: null, zh: 'DCARD × 洽洽瓜子年貨大展派樣',   en: 'DCARD × Chacheer Sampling' },
+    { num: '0107', year: '2025', cat: 'CAMPUS',   img: null, zh: 'Dcard 開學季校園巡迴活動',       en: 'Dcard Campus Tour' },
+    { num: '0108', year: '2025', cat: 'EVENT',    img: null, zh: '抽抽一番賞線下推廣活動',         en: 'Ichiban Kuji Promo Tour' },
+    { num: '0109', year: '2024', cat: 'BRAND',    img: null, zh: '安麗體驗日（巡迴）',             en: 'Amway Experience Day Tour' },
+    { num: '0110', year: '2024', cat: 'AUCTION',  img: null, zh: '藝術品拍賣會',                   en: 'Fine Art Auction' },
+    { num: '0111', year: '2024', cat: 'EVENT',    img: null, zh: '全美親子運動會',                 en: 'All-American Family Sports Day' },
+    { num: '0112', year: '2023', cat: 'CAMPUS',   img: null, zh: 'Dcard × VOLVO 校園活動',         en: 'Dcard × VOLVO Campus' },
   ],
   news: [
     { date: '2026.04.18', tag: 'PROJECT', zh: '春季校園博覽會 — 收場順利落幕', en: 'Spring Career Fair · Wrap' },

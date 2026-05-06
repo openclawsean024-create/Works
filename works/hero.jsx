@@ -37,6 +37,7 @@ const WHero = () => {
             repeating-linear-gradient(135deg, rgba(244,241,234,0.025) 0 8px, transparent 8px 16px);
           pointer-events: none;
         }
+
         .w-hero-meta {
           position: relative; z-index: 2;
           display: flex; gap: 32px;
@@ -59,6 +60,7 @@ const WHero = () => {
         }
         .w-hero h1 .y { color: var(--w-accent); }
         .w-hero h1 .it { font-style: italic; font-weight: 400; color: var(--w-text-mute); }
+
         .w-hero-foot {
           position: relative; z-index: 2;
           display: grid;
@@ -76,14 +78,23 @@ const WHero = () => {
           color: var(--w-text-soft);
           max-width: 360px;
         }
+
         .w-hero-card {
           padding: 24px 28px;
           border: 1px solid var(--w-line);
           background: rgba(244,241,234,0.025);
           position: relative;
           transition: border-color .35s;
+          overflow: hidden;
         }
         .w-hero-card:hover { border-color: var(--w-accent); }
+        .w-hero-card-bg {
+          position: absolute; inset: 0;
+          background-size: cover; background-position: center;
+          opacity: 0.18;
+          transition: opacity .4s;
+        }
+        .w-hero-card:hover .w-hero-card-bg { opacity: 0.28; }
         .w-hero-card-num {
           font-family: "JetBrains Mono", monospace;
           font-size: 10px;
@@ -116,7 +127,10 @@ const WHero = () => {
           font-weight: 600;
           letter-spacing: 0.2em;
         }
-        .w-hero-dots { display: flex; gap: 6px; margin-top: 16px; }
+        .w-hero-dots {
+          display: flex; gap: 6px;
+          margin-top: 16px;
+        }
         .w-hero-dot {
           width: 22px; height: 2px;
           background: var(--w-line);
@@ -124,6 +138,7 @@ const WHero = () => {
           transition: background .3s;
         }
         .w-hero-dot.active { background: var(--w-accent); }
+
         .w-hero-cta {
           display: flex;
           flex-direction: column;
@@ -137,6 +152,8 @@ const WHero = () => {
           color: var(--w-text-mute);
           text-transform: uppercase;
         }
+
+        /* Side scroll hint */
         .w-hero-side {
           position: absolute;
           left: 24px;
@@ -163,6 +180,7 @@ const WHero = () => {
           <span>EVENT · DESIGN · MARKETING</span>
           <span>— 2026 EDITION</span>
         </div>
+
         <h1>
           光<span className="it">、</span>聲<span className="it">、</span>人<span className="it">、</span><br/>
           一場活動的<br/>
@@ -178,13 +196,15 @@ const WHero = () => {
             我們是同一支團隊。
           </p>
         </div>
+
         <div>
           <div className="w-meta" style={{marginBottom: 12}}>★ FEATURED CASE / {String(idx + 1).padStart(2, '0')} · 0{featured.length}</div>
           <div className="w-hero-card" key={idx}>
-            <div className="w-hero-card-num">CASE #{s.num} · {s.year}</div>
-            <div className="w-hero-card-zh">{s.zh}</div>
-            <div className="w-hero-card-en">{s.en}</div>
-            <span className="w-hero-card-cat">{s.cat}</span>
+            {s.img && <div className="w-hero-card-bg" style={{backgroundImage: `url('${s.img}')`}} />}
+            <div className="w-hero-card-num" style={{position:'relative'}}>CASE #{s.num} · {s.year}</div>
+            <div className="w-hero-card-zh" style={{position:'relative'}}>{s.zh}</div>
+            <div className="w-hero-card-en" style={{position:'relative'}}>{s.en}</div>
+            <span className="w-hero-card-cat" style={{position:'relative'}}>{s.cat}</span>
           </div>
           <div className="w-hero-dots">
             {featured.map((_, i) => (
@@ -194,6 +214,7 @@ const WHero = () => {
             ))}
           </div>
         </div>
+
         <div className="w-hero-cta">
           <div className="w-hero-cta-lab">START A PROJECT →</div>
           <button className="w-btn"
