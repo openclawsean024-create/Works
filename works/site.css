@@ -40,7 +40,6 @@
 
 .w-root *::selection { background: var(--w-accent); color: #0A1628; }
 
-/* Reusable */
 .w-serif { font-family: "Noto Serif TC", serif; }
 .w-sans  { font-family: "Inter", system-ui, sans-serif; }
 .w-mono  { font-family: "JetBrains Mono", ui-monospace, monospace; }
@@ -112,7 +111,6 @@
 
 .w-rule { height: 1px; background: var(--w-line); border: 0; margin: 0; }
 
-/* Buttons */
 .w-btn {
   display: inline-flex;
   align-items: center;
@@ -149,7 +147,6 @@
 }
 .w-btn-ghost:hover { background: var(--w-accent); color: #0A1628; border-color: var(--w-accent); }
 
-/* Placeholder */
 .w-ph {
   position: relative;
   background:
@@ -179,11 +176,9 @@
   mix-blend-mode: difference;
 }
 
-/* Reveal */
 .w-reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
 .w-reveal.in { opacity: 1; transform: none; }
 
-/* Marquee */
 @keyframes w-marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }

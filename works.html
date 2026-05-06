@@ -40,7 +40,6 @@
       const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
       const [active, setActive] = React.useState('home');
 
-      // Apply theme + accent on root
       React.useEffect(() => {
         const root = document.querySelector('.w-root');
         if (root) {
@@ -49,7 +48,6 @@
         }
       }, [tweaks.theme, tweaks.accent]);
 
-      // Scrollspy for active nav
       React.useEffect(() => {
         const ids = ['home', 'about', 'service', 'case', 'news', 'contact'];
         const onScroll = () => {
