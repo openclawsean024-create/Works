@@ -1,0 +1,102 @@
+// WORKS — Shared site data
+
+const WORKS_DATA = {
+  brand: {
+    zh: '沃克思國際',
+    en: 'WORKS',
+    full: '沃克思國際有限公司',
+    fullEn: 'WORKS INTERNATIONAL CO., LTD.',
+    tagline: '一場活動，每一秒都被計算。',
+    taglineEn: 'When the light hits, the room holds its breath.',
+    estab: '2024',
+    address: '臺北市中正區開封街一段 66 號 5 樓',
+    addressEn: '5F, No. 66, Sec. 1, Kaifeng St., Zhongzheng Dist., Taipei',
+    rep: '李汪銘',
+    repTitle: 'Founder / Creative Director',
+    taxid: '93741676',
+    capital: '1,000,000',
+  },
+  nav: [
+    { id: 'home',    zh: '首頁',     en: 'HOME' },
+    { id: 'about',   zh: '關於我們', en: 'ABOUT' },
+    { id: 'service', zh: '服務介紹', en: 'SERVICE' },
+    { id: 'case',    zh: '歷年案例', en: 'CASE' },
+    { id: 'news',    zh: '消息公告', en: 'NEWS' },
+    { id: 'contact', zh: '聯絡我們', en: 'CONTACT' },
+  ],
+  servicePillars: [
+    {
+      num: '01',
+      zh: '活動企劃執行',
+      en: 'Event Planning & Execution',
+      sub: ['新品上市', '消費者活動', '表揚大會 / 演唱會', '企業家庭日', '年度尾牙'],
+    },
+    {
+      num: '02',
+      zh: '視覺 & 空間規劃執行',
+      en: 'Visual & Spatial Design',
+      sub: ['平面 / 3D 設計', '產品包裝設計', '企業識別 CI 設計'],
+    },
+    {
+      num: '03',
+      zh: '展會規劃執行',
+      en: 'Exhibition Production',
+      sub: ['展場企劃執行', '商品陳列設計'],
+    },
+    {
+      num: '04',
+      zh: '整合行銷企劃執行',
+      en: 'Integrated Marketing',
+      sub: ['整合行銷企劃執行', '記者會企劃執行'],
+    },
+  ],
+  serviceSeven: [
+    { num: '01', zh: '活動人力',  en: 'Active Manpower',       kw: ['前台接待', '舞台監督', '展場服務', '臨時人員'] },
+    { num: '02', zh: '硬體設備',  en: 'Hardware Integration',  kw: ['LED 大屏', '投影系統', '訊號整合', '直播工程'] },
+    { num: '03', zh: '活動設備',  en: 'Event Planning',        kw: ['桁架舞台', '帳篷', '桌椅', '發電機'] },
+    { num: '04', zh: '表演團隊',  en: 'Performance Team',      kw: ['主持人', '樂團', '舞團', '特技魔術'] },
+    { num: '05', zh: '婚禮企劃',  en: 'Wedding Planning',      kw: ['宴會規劃', '迎娶', '進場設計', '宴客流程'] },
+    { num: '06', zh: '舞台工程',  en: 'Stage Works',           kw: ['結構設計', '施工', '安全認證', '客製場景'] },
+    { num: '07', zh: '燈光音響',  en: 'Lighting & Sound',      kw: ['Moving light', 'Line array', '操作工程師', '租賃'] },
+  ],
+  cases: [
+    { num: '0101', year: '2026', cat: 'CAMPUS',   zh: '新竹陽明交通大學春季校園博覽會', en: 'NYCU Spring Career Fair' },
+    { num: '0102', year: '2026', cat: 'BRAND',    zh: 'WBC × Foodpanda 推廣活動',         en: 'WBC × Foodpanda Activation' },
+    { num: '0103', year: '2026', cat: 'EVENT',    zh: '嘉義燈節 — 中華電信主攤位',        en: 'Chiayi Lantern Festival × CHT' },
+    { num: '0104', year: '2026', cat: 'BRAND',    zh: '台北花伴野餐',                      en: 'Taipei Picnic with Flowers' },
+    { num: '0105', year: '2025', cat: 'CONCERT',  zh: 'Super Junior 20 周年快閃櫃',         en: 'Super Junior 20th Pop-up' },
+    { num: '0106', year: '2025', cat: 'BRAND',    zh: 'DCARD × 洽洽瓜子年貨大展派樣',       en: 'DCARD × Chacheer Sampling' },
+    { num: '0107', year: '2025', cat: 'CAMPUS',   zh: 'Dcard 開學季校園巡迴活動',           en: 'Dcard Campus Tour' },
+    { num: '0108', year: '2025', cat: 'EVENT',    zh: '抽抽一番賞線下推廣活動',             en: 'Ichiban Kuji Promo Tour' },
+    { num: '0109', year: '2024', cat: 'BRAND',    zh: '安麗體驗日（巡迴）',                 en: 'Amway Experience Day Tour' },
+    { num: '0110', year: '2024', cat: 'AUCTION',  zh: '藝術品拍賣會',                       en: 'Fine Art Auction' },
+    { num: '0111', year: '2024', cat: 'EVENT',    zh: '全美親子運動會',                     en: 'All-American Family Sports Day' },
+    { num: '0112', year: '2023', cat: 'CAMPUS',   zh: 'Dcard × VOLVO 校園活動',             en: 'Dcard × VOLVO Campus' },
+  ],
+  news: [
+    { date: '2026.04.18', tag: 'PROJECT', zh: '春季校園博覽會 — 收場順利落幕', en: 'Spring Career Fair · Wrap' },
+    { date: '2026.03.02', tag: 'NOTICE',  zh: '徵才公告：活動執行專員 × 2',     en: 'Hiring · Event Coordinator' },
+    { date: '2026.02.10', tag: 'PROJECT', zh: '嘉義燈節進駐中華電信主攤位',     en: 'Chiayi Lantern Festival Goes Live' },
+    { date: '2026.01.05', tag: 'COMPANY', zh: '沃克思國際 2026 新春開工',       en: 'New Year Kickoff' },
+    { date: '2025.12.20', tag: 'PROJECT', zh: 'DCARD 年貨大展圓滿結束',         en: 'DCARD Sampling Wrapped' },
+    { date: '2025.10.15', tag: 'COMPANY', zh: '沃克思加入台北市活動公會',       en: 'Joined Taipei Event Guild' },
+  ],
+  clients: [
+    'DCARD', 'FOODPANDA', 'CHT 中華電信', 'VOLVO', 'AMWAY 安麗',
+    'SUPER JUNIOR', '陽明交通大學', 'WBC', '洽洽瓜子', '一番賞',
+  ],
+  competencies: [
+    { num: '01', zh: '從概念到收場', en: 'CONCEPT → WRAP', desc: '不只是執行 — 從第一張提案簡報到收場那一刻，我們是同一支團隊。' },
+    { num: '02', zh: '設計與執行同源', en: 'DESIGN-LED EXECUTION', desc: '平面 / 3D / 空間設計 in-house，視覺一致性從紙本延續到現場。' },
+    { num: '03', zh: '校園與品牌雙軌', en: 'CAMPUS × BRAND', desc: '同時熟悉 Z 世代校園生態與 B2B 品牌語言，連結兩端不是難題。' },
+    { num: '04', zh: '巡迴調度經驗', en: 'TOUR LOGISTICS',    desc: '安麗、Dcard、洽洽——多場巡迴累積出的場域應變力。' },
+  ],
+  stats: [
+    { n: '60+',  l: '年執行場次', en: 'PROJECTS / YEAR' },
+    { n: '12+',  l: '合作品牌',   en: 'PARTNER BRANDS' },
+    { n: '24h',  l: '提案回覆',   en: 'RESPONSE' },
+    { n: '100%', l: '客戶留存',   en: 'RETENTION' },
+  ],
+};
+
+window.WORKS_DATA = WORKS_DATA;
