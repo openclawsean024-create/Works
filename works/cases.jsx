@@ -58,11 +58,15 @@ const WCases = () => {
         .w-case:hover .w-case-overlay { opacity: 1; }
         .w-case-img {
           position: absolute; inset: 0;
-          background:
-            repeating-linear-gradient(135deg, rgba(244,241,234,0.05) 0 8px, rgba(244,241,234,0.01) 8px 16px),
-            var(--w-ink-3);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
           transition: transform .6s cubic-bezier(.2,.7,.2,1);
           display: flex; align-items: center; justify-content: center;
+        }
+        .w-case-img.no-photo {
+          background-image: repeating-linear-gradient(135deg, rgba(244,241,234,0.05) 0 8px, rgba(244,241,234,0.01) 8px 16px);
+          background-color: var(--w-ink-3);
         }
         .w-case-img-tag {
           font-family: "JetBrains Mono", monospace;
@@ -155,8 +159,11 @@ const WCases = () => {
       <div className="w-case-grid">
         {list.map(c => (
           <article key={c.num} className="w-case">
-            <div className="w-case-img">
-              <span className="w-case-img-tag">{c.cat} · {c.year}</span>
+            <div
+              className={'w-case-img' + (c.img ? '' : ' no-photo')}
+              style={c.img ? {backgroundImage: `url('${c.img}')`} : {}}
+            >
+              {!c.img && <span className="w-case-img-tag">{c.cat} · {c.year}</span>}
             </div>
             <div className="w-case-overlay" />
             <div className="w-case-content">

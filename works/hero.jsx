@@ -85,8 +85,16 @@ const WHero = () => {
           background: rgba(244,241,234,0.025);
           position: relative;
           transition: border-color .35s;
+          overflow: hidden;
         }
         .w-hero-card:hover { border-color: var(--w-accent); }
+        .w-hero-card-bg {
+          position: absolute; inset: 0;
+          background-size: cover; background-position: center;
+          opacity: 0.18;
+          transition: opacity .4s;
+        }
+        .w-hero-card:hover .w-hero-card-bg { opacity: 0.28; }
         .w-hero-card-num {
           font-family: "JetBrains Mono", monospace;
           font-size: 10px;
@@ -192,10 +200,11 @@ const WHero = () => {
         <div>
           <div className="w-meta" style={{marginBottom: 12}}>★ FEATURED CASE / {String(idx + 1).padStart(2, '0')} · 0{featured.length}</div>
           <div className="w-hero-card" key={idx}>
-            <div className="w-hero-card-num">CASE #{s.num} · {s.year}</div>
-            <div className="w-hero-card-zh">{s.zh}</div>
-            <div className="w-hero-card-en">{s.en}</div>
-            <span className="w-hero-card-cat">{s.cat}</span>
+            {s.img && <div className="w-hero-card-bg" style={{backgroundImage: `url('${s.img}')`}} />}
+            <div className="w-hero-card-num" style={{position:'relative'}}>CASE #{s.num} · {s.year}</div>
+            <div className="w-hero-card-zh" style={{position:'relative'}}>{s.zh}</div>
+            <div className="w-hero-card-en" style={{position:'relative'}}>{s.en}</div>
+            <span className="w-hero-card-cat" style={{position:'relative'}}>{s.cat}</span>
           </div>
           <div className="w-hero-dots">
             {featured.map((_, i) => (

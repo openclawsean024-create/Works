@@ -90,13 +90,47 @@ const WNews = () => {
   );
 };
 
+// ── 填入你的 Formspree endpoint ──────────────────────────────────────
+// 1. 前往 https://formspree.io → 免費註冊 → New Form
+// 2. 在 Form Settings → Email 填入 hello@works.tw
+// 3. 複製 endpoint（格式：https://formspree.io/f/xxxxxxxx）貼到下方
+// 4. sean0407@gmail.com 會透過 _cc 欄位自動收到副本
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
 const WContact = () => {
   const D = window.WORKS_DATA;
   const [form, setForm] = React.useState({ name: '', company: '', type: '', date: '', budget: '', msg: '' });
-  const [sent, setSent] = React.useState(false);
+  const [status, setStatus] = React.useState('idle'); // idle | sending | sent | error
 
   const update = (k) => (e) => setForm(f => ({...f, [k]: e.target.value}));
-  const submit = (e) => { e.preventDefault(); setSent(true); };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          姓名: form.name,
+          公司: form.company,
+          活動類型: form.type,
+          預計日期: form.date,
+          預算範圍: form.budget,
+          需求說明: form.msg,
+          _cc: 'sean0407@gmail.com',
+          _subject: `[WORKS 詢價] ${form.name}${form.company ? ' / ' + form.company : ''} — ${form.type || '專案詢問'}`,
+        }),
+      });
+      if (res.ok) {
+        setStatus('sent');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
 
   const types = ['新品上市', '消費者活動', '記者會', '校園活動', '展場', '尾牙年會', '其他'];
 
@@ -286,7 +320,15 @@ const WContact = () => {
           </div>
         </div>
 
-        {!sent ? (
+        {status === 'sent' ? (
+          <div className="w-form" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div className="w-form-sent">
+              ★ 已收到您的需求<br/>
+              我們會在 24 小時內回覆
+              <small>THANK YOU — WE'LL BE IN TOUCH</small>
+            </div>
+          </div>
+        ) : (
           <form className="w-form" onSubmit={submit}>
             <div className="w-form-head">
               <h4>專案詢問 / Project Inquiry</h4>
@@ -345,18 +387,15 @@ const WContact = () => {
               <div className="w-form-note">
                 ※ 24 小時內回覆<br/>
                 ※ 提案內容嚴格保密
+                {status === 'error' && (
+                  <div style={{color:'#ff6b6b', marginTop: 8}}>送出失敗，請稍後再試。</div>
+                )}
               </div>
-              <button type="submit" className="w-btn">送出詢問 / SEND →</button>
+              <button type="submit" className="w-btn" disabled={status === 'sending'}>
+                {status === 'sending' ? '送出中...' : '送出詢問 / SEND →'}
+              </button>
             </div>
           </form>
-        ) : (
-          <div className="w-form" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <div className="w-form-sent">
-              ★ 已收到您的需求<br/>
-              我們會在 24 小時內回覆
-              <small>THANK YOU — WE'LL BE IN TOUCH</small>
-            </div>
-          </div>
         )}
       </div>
     </section>
