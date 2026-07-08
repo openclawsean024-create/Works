@@ -65,18 +65,18 @@ const WHeader = ({ active, setActive }) => {
           display: block;
           font-family: "Inter", sans-serif;
           font-weight: 500;
-          font-size: 9px;
-          letter-spacing: 0.32em;
+          font-size: 11px;
+          letter-spacing: 0.24em;
           color: var(--w-text-mute);
           margin-top: 3px;
           text-transform: uppercase;
         }
-        .w-nav { display: flex; gap: 28px; }
+        .w-nav { display: flex; gap: 32px; }
         .w-nav a {
           font-family: "Inter", sans-serif;
-          font-size: 11px;
+          font-size: 15px;
           font-weight: 500;
-          letter-spacing: 0.22em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
           color: var(--w-text-soft);
           padding: 6px 0;
@@ -164,7 +164,7 @@ const WHeader = ({ active, setActive }) => {
             {n.en}
           </a>
         ))}
-        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', fontSize: '11px' }} title="後台管理">⚙ ADMIN</a>
+        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', fontSize: '15px' }} title="後台管理">⚙ ADMIN</a>
       </nav>
 
       <button className="w-btn w-header-cta" onClick={go('contact')}>
@@ -181,7 +181,7 @@ const WHeader = ({ active, setActive }) => {
             {n.zh} / {n.en}
           </a>
         ))}
-        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', textAlign: 'center' }}>⚙ 後台管理 / ADMIN</a>
+        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', textAlign: 'center', fontSize: '18px' }}>⚙ 後台管理 / ADMIN</a>
         <button className="w-btn w-mobile-cta" onClick={go('contact')}>
           獲取專案報價 / QUOTE
         </button>
