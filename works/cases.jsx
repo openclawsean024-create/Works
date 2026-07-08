@@ -24,6 +24,16 @@ const WCases = () => {
 
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
   const [cases, setCases] = React.useState(getEffectiveCases());
+  const [activeCase, setActiveCase] = React.useState(null) // modal state
+
+  // Close modal on ESC + lock body scroll when open
+  React.useEffect(() => {
+    if (!activeCase) return
+    const onKey = (e) => { if (e.key === 'Escape') setActiveCase(null) }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
+  }, [activeCase])
 
   // Lazy-load background images with IntersectionObserver
   const imgRefs = React.useRef([]);
@@ -177,6 +187,101 @@ const WCases = () => {
           color: var(--w-text-mute);
           text-transform: uppercase;
         }
+
+        /* === Case detail modal/lightbox === */
+        .w-case-modal {
+          position: fixed; inset: 0;
+          background: rgba(0,0,0,0.92);
+          backdrop-filter: blur(8px);
+          z-index: 999;
+          display: flex; align-items: center; justify-content: center;
+          padding: 24px;
+          animation: w-modal-in .25s ease-out;
+        }
+        @keyframes w-modal-in {
+          from { opacity: 0; transform: scale(0.96); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        .w-case-modal-box {
+          position: relative;
+          max-width: 920px; width: 100%;
+          max-height: 90vh;
+          background: var(--w-ink-2);
+          border: 1px solid var(--w-line);
+          display: grid;
+          grid-template-columns: 1.2fr 1fr;
+          overflow: hidden;
+          animation: w-modal-pop .35s cubic-bezier(.2,.7,.2,1);
+        }
+        @keyframes w-modal-pop {
+          from { transform: translateY(20px); opacity: 0; }
+          to   { transform: translateY(0); opacity: 1; }
+        }
+        .w-case-modal-close {
+          position: absolute; top: 12px; right: 12px;
+          width: 36px; height: 36px;
+          background: rgba(0,0,0,0.7); color: var(--w-text);
+          border: 1px solid var(--w-line);
+          font-size: 16px; cursor: pointer;
+          z-index: 2;
+          display: flex; align-items: center; justify-content: center;
+          transition: background .2s, border-color .2s;
+        }
+        .w-case-modal-close:hover { background: var(--w-accent); color: #0A1628; border-color: var(--w-accent); }
+        .w-case-modal-img {
+          background-size: cover;
+          background-position: center;
+          background-color: var(--w-ink-3);
+          min-height: 400px;
+        }
+        .w-case-modal-body {
+          padding: 36px 32px;
+          display: flex; flex-direction: column;
+          gap: 16px;
+          overflow-y: auto;
+        }
+        .w-case-modal-meta {
+          display: flex; align-items: center; gap: 10px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 11px; letter-spacing: 0.16em;
+        }
+        .w-case-modal-meta .w-case-year { color: var(--w-text-mute); }
+        .w-case-modal-zh {
+          font-family: "Noto Serif TC", serif;
+          font-weight: 600;
+          font-size: 32px; line-height: 1.2;
+          margin: 0;
+        }
+        .w-case-modal-en {
+          font-family: "Inter", sans-serif;
+          font-size: 12px; letter-spacing: 0.2em;
+          color: var(--w-text-mute);
+          text-transform: uppercase;
+        }
+        .w-case-modal-tags {
+          display: flex; flex-wrap: wrap; gap: 8px;
+          margin-top: 8px;
+        }
+        .w-case-modal-tags span {
+          font-family: "Inter", sans-serif;
+          font-size: 12px; padding: 6px 12px;
+          border: 1px solid var(--w-line);
+          color: var(--w-accent);
+          letter-spacing: 0.04em;
+        }
+        .w-case-modal-hint {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 10px; letter-spacing: 0.18em;
+          color: var(--w-text-mute);
+          margin: auto 0 0;
+          text-transform: uppercase;
+        }
+        @media (max-width: 768px) {
+          .w-case-modal-box { grid-template-columns: 1fr !important; max-height: 95vh !important; }
+          .w-case-modal-img { min-height: 240px !important; }
+          .w-case-modal-body { padding: 24px 20px !important; }
+          .w-case-modal-zh { font-size: 24px !important; }
+        }
       `}</style>
 
       <div className="w-section-head">
@@ -209,7 +314,7 @@ const WCases = () => {
           // Resolve image: customs override → default placeholder
           const img = c.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[c.num])
           return (
-            <article key={c.num} className="w-case">
+            <article key={c.num} className="w-case" onClick={() => setActiveCase(c)}>
               <div
                 ref={el => imgRefs.current[i] = el}
                 data-bg={img || ''}
@@ -232,6 +337,33 @@ const WCases = () => {
           )
         })}
       </div>
+
+      {activeCase && (() => {
+        const mImg = activeCase.img || window.WORKS_DEFAULT_IMAGES?.cases?.[activeCase.num]
+        return (
+          <div className="w-case-modal" onClick={() => setActiveCase(null)}>
+            <div className="w-case-modal-box" onClick={e => e.stopPropagation()}>
+              <button className="w-case-modal-close" onClick={() => setActiveCase(null)} aria-label="關閉">✕</button>
+              <div className="w-case-modal-img" style={mImg ? {backgroundImage: `url('${mImg}')`} : {}} />
+              <div className="w-case-modal-body">
+                <div className="w-case-modal-meta">
+                  <span className="w-case-num">#{activeCase.num}</span>
+                  <span className="w-case-cat">{activeCase.cat}</span>
+                  <span className="w-case-year">· {activeCase.year}</span>
+                </div>
+                <h3 className="w-case-modal-zh">{activeCase.zh}</h3>
+                <div className="w-case-modal-en">{activeCase.en}</div>
+                {activeCase.tags && activeCase.tags.length > 0 && (
+                  <div className="w-case-modal-tags">
+                    {activeCase.tags.map(t => <span key={t}>{t}</span>)}
+                  </div>
+                )}
+                <p className="w-case-modal-hint">ESC 或點外部關閉</p>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </section>
   );
 };

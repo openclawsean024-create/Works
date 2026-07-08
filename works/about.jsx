@@ -64,6 +64,28 @@ const WAbout = () => {
         .w-stat .n { font-family: "Noto Serif TC", serif; font-weight: 600; font-size: 64px; line-height: 0.95; color: var(--w-accent); letter-spacing: -0.02em; }
         .w-stat .l { font-family: "Noto Serif TC", serif; font-size: 16px; margin-top: 12px; color: var(--w-text); }
         .w-stat .l small { display: block; font-family: "Inter", sans-serif; font-size: 9px; letter-spacing: 0.28em; color: var(--w-text-mute); margin-top: 4px; text-transform: uppercase; }
+        @media (max-width: 768px) {
+          .w-about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .w-about-img { aspect-ratio: 16/10 !important; max-width: 480px !important; }
+          .w-about-text h3 { font-size: 36px !important; }
+          .w-about-text p { font-size: 16px !important; }
+          .w-info { grid-template-columns: 1fr 1fr !important; font-size: 11px !important; }
+          .w-stats-row { grid-template-columns: repeat(2, 1fr) !important; margin-top: 64px !important; }
+          .w-stat { padding: 24px 16px !important; }
+          .w-stat:nth-child(1), .w-stat:nth-child(2) { border-bottom: 1px solid var(--w-line); }
+          .w-stat:nth-child(2n) { border-right: none !important; }
+          .w-stat .n { font-size: 44px !important; }
+          .w-stat .l { font-size: 14px !important; }
+          .w-comp-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .w-about-text h3 { font-size: 30px !important; }
+          .w-about-text p { font-size: 15px !important; }
+          .w-stats-row { grid-template-columns: 1fr !important; }
+          .w-stat { border-right: none !important; border-bottom: 1px solid var(--w-line); }
+          .w-stat:last-child { border-bottom: none; }
+          .w-stat .n { font-size: 38px !important; }
+        }
       `}</style>
 
       <div className="w-section-head">
