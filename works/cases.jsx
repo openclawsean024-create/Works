@@ -23,7 +23,11 @@ const WCases = () => {
   };
 
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
-  const [cases, setCases] = React.useState(getEffectiveCases());
+  const [cases, setCases] = React.useState(() => {
+    const c = getEffectiveCases()
+    window.__worksCasesCache = c
+    return c
+  })
   const [activeCase, setActiveCase] = React.useState(null) // modal state
 
   // Close modal on ESC + lock body scroll when open
