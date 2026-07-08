@@ -35,8 +35,21 @@ const WCases = () => {
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [activeCase])
 
-  // Attach click handlers to .w-case articles (DOM delegation, more reliable than JSX onClick)
+  // Attach click handlers + data-num to .w-case articles (DOM delegation, more reliable than JSX onClick)
   React.useEffect(() => {
+    // Assign data-num to all .w-case articles (workaround for babel dropping JSX data- attrs)
+    const applyDataNum = () => {
+      const arts = document.querySelectorAll('.w-case')
+      const cache = window.__worksCasesCache || []
+      arts.forEach((art, i) => {
+        if (!art.dataset.num && cache[i]) art.dataset.num = cache[i].num
+        if (!art.style.cursor) art.style.cursor = 'pointer'
+      })
+    }
+    applyDataNum()
+    const t1 = setTimeout(applyDataNum, 50)
+    const t2 = setTimeout(applyDataNum, 300)
+
     const handler = (e) => {
       const art = e.target.closest('.w-case')
       if (!art) return
@@ -46,8 +59,11 @@ const WCases = () => {
       if (c) setActiveCase(c)
     }
     document.addEventListener('click', handler)
-    return () => document.removeEventListener('click', handler)
-  }, [])
+    return () => {
+      document.removeEventListener('click', handler)
+      clearTimeout(t1); clearTimeout(t2)
+    }
+  }, [cases, filter])
 
   // Lazy-load background images with IntersectionObserver
   const imgRefs = React.useRef([]);
@@ -331,7 +347,7 @@ const WCases = () => {
           // Resolve image: customs override → default placeholder
           const img = c.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[c.num])
           return (
-            <article key={c.num} className="w-case" data-num={c.num}>
+            <article key={c.num} className="w-case">
               <div
                 ref={el => imgRefs.current[i] = el}
                 data-bg={img || ''}
