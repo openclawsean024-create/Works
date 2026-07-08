@@ -3,14 +3,61 @@
 const WHero = () => {
   const D = window.WORKS_DATA;
   const [idx, setIdx] = React.useState(0);
-  const featured = D.cases.slice(0, 4);
+
+  // Use the same effective cases logic as the cases section,
+  // so admin edits (overrides/hides/custom cases) flow through.
+  const [featured, setFeatured] = React.useState(() => {
+    try {
+      const customsMap = JSON.parse(localStorage.getItem('works-custom-cases') || '{}')
+      const deleted = new Set(JSON.parse(localStorage.getItem('works-deleted-defaults') || '[]'))
+      const defaults = (D.cases || []).filter((c) => !deleted.has(c.num))
+      const mergedDefaults = defaults.map((c) => customsMap[c.num] ? { ...c, ...customsMap[c.num] } : c)
+      const customOnly = Object.entries(customsMap)
+        .filter(([num]) => !defaults.some((d) => d.num === num))
+        .map(([num, data]) => ({ ...data, num }))
+      // Featured = first 4 (custom cases on top, then defaults)
+      return [...customOnly, ...mergedDefaults].slice(0, 4)
+    } catch { return D.cases.slice(0, 4) }
+  })
 
   React.useEffect(() => {
-    const t = setInterval(() => setIdx(i => (i + 1) % featured.length), 4500);
-    return () => clearInterval(t);
-  }, []);
+    const refresh = () => {
+      try {
+        const customsMap = JSON.parse(localStorage.getItem('works-custom-cases') || '{}')
+        const deleted = new Set(JSON.parse(localStorage.getItem('works-deleted-defaults') || '[]'))
+        const defaults = (D.cases || []).filter((c) => !deleted.has(c.num))
+        const mergedDefaults = defaults.map((c) => customsMap[c.num] ? { ...c, ...customsMap[c.num] } : c)
+        const customOnly = Object.entries(customsMap)
+          .filter(([num]) => !defaults.some((d) => d.num === num))
+          .map(([num, data]) => ({ ...data, num }))
+        setFeatured([...customOnly, ...mergedDefaults].slice(0, 4))
+      } catch {}
+    }
+    const onFocus = () => refresh()
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [])
 
-  const s = featured[idx];
+  // Auto-rotate
+  React.useEffect(() => {
+    if (featured.length === 0) return
+    const t = setInterval(() => setIdx(i => (i + 1) % featured.length), 4500)
+    return () => clearInterval(t)
+  }, [featured.length])
+
+  if (featured.length === 0) {
+    return (
+      <section id="w-home" className="w-hero">
+        <p>目前沒有作品集。請到後台新增。</p>
+      </section>
+    )
+  }
+
+  // Clamp idx if featured shrank (e.g. all cases deleted)
+  const safeIdx = idx % featured.length
+  const s = featured[safeIdx]
+  // Resolve hero image: customs override → default placeholder
+  const heroImg = s.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[s.num])
 
   return (
     <section id="w-home" className="w-hero">
@@ -197,9 +244,9 @@ const WHero = () => {
         </div>
 
         <div>
-          <div className="w-meta" style={{marginBottom: 12}}>★ FEATURED CASE / {String(idx + 1).padStart(2, '0')} · 0{featured.length}</div>
-          <div className="w-hero-card" key={idx}>
-            {s.img && <div className="w-hero-card-bg" style={{backgroundImage: `url('${s.img}')`}} />}
+          <div className="w-meta" style={{marginBottom: 12}}>★ FEATURED CASE / {String(safeIdx + 1).padStart(2, '0')} · 0{featured.length}</div>
+          <div className="w-hero-card" key={safeIdx}>
+            {heroImg && <div className="w-hero-card-bg" style={{backgroundImage: `url('${heroImg}')`}} />}
             <div className="w-hero-card-num" style={{position:'relative'}}>CASE #{s.num} · {s.year}</div>
             <div className="w-hero-card-zh" style={{position:'relative'}}>{s.zh}</div>
             <div className="w-hero-card-en" style={{position:'relative'}}>{s.en}</div>
@@ -208,7 +255,7 @@ const WHero = () => {
           <div className="w-hero-dots">
             {featured.map((_, i) => (
               <div key={i}
-                   className={'w-hero-dot' + (i === idx ? ' active' : '')}
+                   className={'w-hero-dot' + (i === safeIdx ? ' active' : '')}
                    onClick={() => setIdx(i)} />
             ))}
           </div>

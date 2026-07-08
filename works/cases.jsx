@@ -4,22 +4,28 @@ const WCases = () => {
   const D = window.WORKS_DATA;
   const [filter, setFilter] = React.useState('ALL');
 
-  // Merge data.jsx defaults with localStorage custom cases
-  // (admin.html writes to these keys)
+  // Merge data.jsx defaults with localStorage custom cases.
+  // Customs are stored as a map { num: data } so editing a default
+  // case overrides it (by num) instead of duplicating.
+  // (admin-app.jsx writes to these keys; keep logic in sync)
   const getEffectiveCases = () => {
-    let customs = [];
+    let customsMap = {};
     let deleted = [];
-    try { customs = JSON.parse(localStorage.getItem('works-custom-cases') || '[]') } catch {}
+    try { customsMap = JSON.parse(localStorage.getItem('works-custom-cases') || '{}') } catch {}
     try { deleted = JSON.parse(localStorage.getItem('works-deleted-defaults') || '[]') } catch {}
     const deletedSet = new Set(deleted);
     const defaults = (D.cases || []).filter((c) => !deletedSet.has(c.num));
-    return [...customs, ...defaults];
+    const mergedDefaults = defaults.map((c) => customsMap[c.num] ? { ...c, ...customsMap[c.num] } : c);
+    const customOnly = Object.entries(customsMap)
+      .filter(([num]) => !defaults.some((d) => d.num === num))
+      .map(([num, data]) => ({ ...data, num }));
+    return [...customOnly, ...mergedDefaults];
   };
 
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
   const [cases, setCases] = React.useState(getEffectiveCases());
 
-  // Re-read on mount (in case admin wrote to localStorage in another tab)
+  // Re-read on focus (in case admin wrote to localStorage in another tab)
   React.useEffect(() => {
     const onFocus = () => setCases(getEffectiveCases());
     window.addEventListener('focus', onFocus);
@@ -178,27 +184,31 @@ const WCases = () => {
       </div>
 
       <div className="w-case-grid">
-        {list.map(c => (
-          <article key={c.num} className="w-case">
-            <div
-              className={'w-case-img' + (c.img ? '' : ' no-photo')}
-              style={c.img ? {backgroundImage: `url('${c.img}')`} : {}}
-            >
-              {!c.img && <span className="w-case-img-tag">{c.cat} · {c.year}</span>}
-            </div>
-            <div className="w-case-overlay" />
-            <div className="w-case-content">
-              <div className="w-case-top">
-                <span className="w-case-num">#{c.num}</span>
-                <span className="w-case-cat">{c.cat}</span>
+        {list.map(c => {
+          // Resolve image: customs override → default placeholder
+          const img = c.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[c.num])
+          return (
+            <article key={c.num} className="w-case">
+              <div
+                className={'w-case-img' + (img ? '' : ' no-photo')}
+                style={img ? {backgroundImage: `url('${img}')`} : {}}
+              >
+                {!img && <span className="w-case-img-tag">{c.cat} · {c.year}</span>}
               </div>
-              <div className="w-case-bot">
-                <h3 className="w-case-zh">{c.zh}</h3>
-                <div className="w-case-en">{c.en} · {c.year}</div>
+              <div className="w-case-overlay" />
+              <div className="w-case-content">
+                <div className="w-case-top">
+                  <span className="w-case-num">#{c.num}</span>
+                  <span className="w-case-cat">{c.cat}</span>
+                </div>
+                <div className="w-case-bot">
+                  <h3 className="w-case-zh">{c.zh}</h3>
+                  <div className="w-case-en">{c.en} · {c.year}</div>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          )
+        })}
       </div>
     </section>
   );

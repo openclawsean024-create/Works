@@ -1,5 +1,47 @@
 // WORKS — About + Stats + Competencies + Marquee Clients
 
+function AboutImage() {
+  // Image resolution order:
+  //   1. admin-uploaded asset (localStorage works-image-assets)
+  //   2. default placeholder (picsum)
+  //   3. fallback text-only placeholder
+  const [customImg, setCustomImg] = React.useState(() => {
+    try {
+      const assets = JSON.parse(localStorage.getItem('works-image-assets') || '{}')
+      return assets.about_team?.img || null
+    } catch { return null }
+  })
+
+  // Re-read when window gains focus (in case admin updated in another tab)
+  React.useEffect(() => {
+    const onFocus = () => {
+      try {
+        const assets = JSON.parse(localStorage.getItem('works-image-assets') || '{}')
+        setCustomImg(assets.about_team?.img || null)
+      } catch { setCustomImg(null) }
+    }
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [])
+
+  const defaultImg = window.WORKS_DEFAULT_IMAGES?.assets?.about_team
+  const img = customImg || defaultImg
+
+  if (img) {
+    return (
+      <div className="w-ph w-about-img has-photo" style={{ backgroundImage: `url('${img}')` }}>
+        <span className="w-about-img-tag">★ TEAM 沃克思 / 2025</span>
+      </div>
+    )
+  }
+  return (
+    <div className="w-ph w-about-img">
+      <span className="w-about-img-tag">★ TEAM 沃克思 / 2025</span>
+      <span className="tag">PORTRAIT 720×900</span>
+    </div>
+  )
+}
+
 const WAbout = () => {
   const D = window.WORKS_DATA;
   return (
@@ -33,10 +75,7 @@ const WAbout = () => {
       </div>
 
       <div className="w-about-grid">
-        <div className="w-ph w-about-img">
-          <span className="w-about-img-tag">★ TEAM 沃克思 / 2025</span>
-          <span className="tag">PORTRAIT 720×900</span>
-        </div>
+        <AboutImage />
         <div className="w-about-text">
           <h3>我們做活動，<br/>但更像在做<em>一本書。</em></h3>
           <p>一場活動是有節奏的——進場、暖身、高潮、餘韻。我們把每一個環節都當作章節去設計：視覺先行、空間結構、人流動線、現場互動，最後是收場那一刻觀眾帶走的記憶。</p>
