@@ -76,10 +76,10 @@ window.WORKS_DEFAULT_IMAGES = {
     about_brand: CASE_IMAGES.about_brand,
   },
   highlights: {
-    H1: CASE_IMAGES.H1_plan,
-    H2: CASE_IMAGES.H2_setup,
-    H3: CASE_IMAGES.H3_media,
-    H4: CASE_IMAGES.H4_collab,
+    H01: CASE_IMAGES.H1_plan,
+    H02: CASE_IMAGES.H2_setup,
+    H03: CASE_IMAGES.H3_media,
+    H04: CASE_IMAGES.H4_collab,
   },
   picsum: PICSEED,
   get(key, fallbackKey) {
