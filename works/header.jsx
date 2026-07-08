@@ -3,6 +3,7 @@
 const WHeader = ({ active, setActive }) => {
   const D = window.WORKS_DATA;
   const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -18,12 +19,13 @@ const WHeader = ({ active, setActive }) => {
   const go = (id) => (e) => {
     e.preventDefault();
     setActive(id);
+    setMenuOpen(false);
     const el = document.getElementById('w-' + id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <header className={'w-header' + (scrolled ? ' is-scrolled' : '')}>
+    <header className={'w-header' + (scrolled ? ' is-scrolled' : '') + (menuOpen ? ' is-open' : '')}>
       <style>{`
         .w-header {
           position: sticky;
@@ -37,7 +39,7 @@ const WHeader = ({ active, setActive }) => {
           transition: background .3s, border-color .3s, padding .3s;
         }
         .w-header.is-scrolled {
-          background: rgba(10, 22, 40, 0.88);
+          background: rgba(0, 0, 0, 0.88);
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
           border-bottom-color: var(--w-line);
@@ -89,6 +91,63 @@ const WHeader = ({ active, setActive }) => {
           position: absolute; left: 0; right: 0; bottom: -2px;
           height: 2px; background: var(--w-accent);
         }
+
+        /* Hamburger — hidden on desktop, shown on mobile */
+        .w-burger {
+          display: none;
+          width: 38px; height: 38px;
+          background: transparent;
+          border: 1.5px solid var(--w-text);
+          color: var(--w-text);
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          position: relative;
+        }
+        .w-burger span {
+          display: block;
+          width: 16px; height: 1.5px;
+          background: var(--w-text);
+          position: absolute;
+          transition: transform .25s, opacity .25s;
+        }
+        .w-burger span:nth-child(1) { transform: translateY(-5px); }
+        .w-burger span:nth-child(2) { transform: translateY(0); }
+        .w-burger span:nth-child(3) { transform: translateY(5px); }
+        .w-header.is-open .w-burger span:nth-child(1) { transform: translateY(0) rotate(45deg); background: var(--w-accent); }
+        .w-header.is-open .w-burger span:nth-child(2) { opacity: 0; }
+        .w-header.is-open .w-burger span:nth-child(3) { transform: translateY(0) rotate(-45deg); background: var(--w-accent); }
+
+        /* Mobile menu drawer */
+        .w-mobile-menu {
+          display: none;
+          position: fixed;
+          top: 70px; left: 0; right: 0;
+          background: rgba(0, 0, 0, 0.96);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          padding: 32px 24px;
+          border-bottom: 1px solid var(--w-line);
+          z-index: 49;
+        }
+        .w-mobile-menu.open { display: block; }
+        .w-mobile-menu a {
+          display: block;
+          padding: 18px 0;
+          font-family: "Noto Serif TC", serif;
+          font-weight: 600;
+          font-size: 22px;
+          color: var(--w-text);
+          border-bottom: 1px solid var(--w-line-soft);
+          cursor: pointer;
+        }
+        .w-mobile-menu a.active { color: var(--w-accent); }
+        .w-mobile-menu .w-mobile-cta {
+          margin-top: 24px;
+          width: 100%;
+          justify-content: center;
+          font-size: 13px;
+        }
       `}</style>
 
       <div className="w-logo" onClick={go('home')}>
@@ -107,9 +166,24 @@ const WHeader = ({ active, setActive }) => {
         ))}
       </nav>
 
-      <button className="w-btn" onClick={go('contact')}>
+      <button className="w-btn w-header-cta" onClick={go('contact')}>
         START A PROJECT →
       </button>
+
+      <button className="w-burger" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div className={'w-mobile-menu' + (menuOpen ? ' open' : '')}>
+        {D.nav.map(n => (
+          <a key={n.id} className={active === n.id ? 'active' : ''} onClick={go(n.id)}>
+            {n.zh} / {n.en}
+          </a>
+        ))}
+        <button className="w-btn w-mobile-cta" onClick={go('contact')}>
+          獲取專案報價 / QUOTE
+        </button>
+      </div>
     </header>
   );
 };
