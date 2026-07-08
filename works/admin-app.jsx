@@ -146,14 +146,36 @@ function CaseForm({ initial, onSubmit, onCancel, onDelete, isCustom, submitLabel
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
   const handleImage = (e) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0] || e.dataTransfer?.files?.[0]
     if (!file) return
+    processImageFile(file)
+  }
+
+  const processImageFile = (file) => {
     if (file.size > 1.5 * 1024 * 1024) {
       alert('圖片太大，請壓縮到 1.5MB 以下（建議 800×1000px JPG）')
       return
     }
     const reader = new FileReader()
-    reader.onload = (ev) => update('img', ev.target.result)
+    reader.onload = (ev) => {
+      // Auto-compress via canvas
+      const img = new Image()
+      img.onload = () => {
+        const maxDim = 1000
+        let { width, height } = img
+        if (width > maxDim || height > maxDim) {
+          if (width > height) { height = Math.round(height * maxDim / width); width = maxDim }
+          else { width = Math.round(width * maxDim / height); height = maxDim }
+        }
+        const canvas = document.createElement('canvas')
+        canvas.width = width; canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85)
+        update('img', dataUrl)
+      }
+      img.src = ev.target.result
+    }
     reader.readAsDataURL(file)
   }
 
@@ -195,10 +217,22 @@ function CaseForm({ initial, onSubmit, onCancel, onDelete, isCustom, submitLabel
         className="w-image-preview"
         style={form.img ? { backgroundImage: `url('${form.img}')` } : {}}
         onClick={() => fileRef.current?.click()}
+        onDragOver={(e) => { e.preventDefault(); e.stopPropagation() }}
+        onDragEnter={(e) => { e.preventDefault(); e.stopPropagation() }}
+        onDrop={(e) => {
+          e.preventDefault(); e.stopPropagation()
+          const file = e.dataTransfer?.files?.[0]
+          if (file) processImageFile(file)
+        }}
         role="button"
         tabIndex={0}
       >
-        {!form.img && '+ 點擊上傳圖片'}
+        {!form.img && '+ 點擊上傳或拖曳圖片'}
+        {form.img && (
+          <div style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', padding: '4px 10px', fontSize: 11, color: 'var(--w-accent)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.16em' }}>
+            自動壓縮 ✓
+          </div>
+        )}
       </div>
       <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImage} style={{ display: 'none' }} />
       {form.img && (
@@ -309,17 +343,48 @@ function ImageAssetManager({ show, onBack }) {
   const refresh = () => setAssets(loadImageAssets())
 
   const handleFile = (e) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0] || e.dataTransfer?.files?.[0]
     if (!file) return
+    processFile(file)
+  }
+
+  const processFile = (file) => {
     if (file.size > 1.5 * 1024 * 1024) {
       alert('圖片太大，請壓縮到 1.5MB 以下')
       return
     }
     const reader = new FileReader()
     reader.onload = (ev) => {
-      setEditing((s) => ({ ...(s || { key: '', name: '', desc: '' }), img: ev.target.result }))
+      // Auto-compress via canvas
+      const img = new Image()
+      img.onload = () => {
+        const maxDim = 1200
+        let { width, height } = img
+        if (width > maxDim || height > maxDim) {
+          if (width > height) { height = Math.round(height * maxDim / width); width = maxDim }
+          else { width = Math.round(width * maxDim / height); height = maxDim }
+        }
+        const canvas = document.createElement('canvas')
+        canvas.width = width; canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85)
+        setEditing((s) => ({ ...(s || { key: '', name: '', desc: '' }), img: dataUrl }))
+      }
+      img.src = ev.target.result
     }
     reader.readAsDataURL(file)
+  }
+
+  // Drag & drop handlers
+  const dragHandlers = {
+    onDragOver: (e) => { e.preventDefault(); e.stopPropagation() },
+    onDragEnter: (e) => { e.preventDefault(); e.stopPropagation() },
+    onDrop: (e) => {
+      e.preventDefault(); e.stopPropagation()
+      const file = e.dataTransfer?.files?.[0]
+      if (file) processFile(file)
+    },
   }
 
   const handleSave = (data) => {
@@ -385,10 +450,18 @@ function ImageAssetManager({ show, onBack }) {
                 className="w-image-preview"
                 style={editing.img ? { backgroundImage: `url('${editing.img}')` } : {}}
                 onClick={() => fileRef.current?.click()}
+                onDragOver={dragHandlers.onDragOver}
+                onDragEnter={dragHandlers.onDragEnter}
+                onDrop={dragHandlers.onDrop}
                 role="button"
                 tabIndex={0}
               >
-                {!editing.img && '+ 點擊上傳圖片'}
+                {!editing.img && '+ 點擊上傳或拖曳圖片'}
+                {editing.img && (
+                  <div style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', padding: '4px 10px', fontSize: 11, color: 'var(--w-accent)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.16em' }}>
+                    自動壓縮 ✓
+                  </div>
+                )}
               </div>
               <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFile} style={{ display: 'none' }} />
               {editing.img && (
