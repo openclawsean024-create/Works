@@ -180,6 +180,59 @@ const WService = () => {
           border: 1px solid var(--w-line);
           color: var(--w-text-soft);
         }
+
+        /* === MOBILE RESPONSIVE === */
+        @media (max-width: 768px) {
+          .w-svc-tabs {
+            flex-direction: column;
+            margin-bottom: 32px;
+          }
+          .w-svc-tab {
+            border-right: none;
+            border-bottom: 1px solid var(--w-line);
+            padding: 18px 20px;
+          }
+          .w-svc-tab strong { font-size: 20px; margin-top: 4px; }
+
+          /* Pillar 4-col → 1-col stack */
+          .w-pillar {
+            grid-template-columns: 1fr;
+            gap: 16px;
+            padding: 28px 0;
+          }
+          .w-pillar-num { padding-top: 0; }
+          .w-pillar-zh { font-size: 32px; }
+          .w-pillar-sub {
+            padding-top: 4px;
+            gap: 8px;
+          }
+          .w-pillar-sub span {
+            font-size: 12px;
+            padding: 6px 14px;
+          }
+          .w-pillar-arrow {
+            justify-self: start;
+            width: 36px; height: 36px;
+            font-size: 14px;
+          }
+
+          /* Seven 4-col → 2-col */
+          .w-seven {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .w-svc7 { padding: 24px 18px; min-height: 200px; }
+          .w-svc7:nth-child(4n) { border-right: 1px solid var(--w-line); }
+          .w-svc7:nth-child(2n) { border-right: none; }
+          .w-svc7-zh { font-size: 20px; }
+        }
+        @media (max-width: 480px) {
+          .w-svc-tab strong { font-size: 18px; }
+          .w-pillar-zh { font-size: 26px; }
+          .w-pillar-sub span { font-size: 11px; padding: 5px 12px; }
+          .w-seven { grid-template-columns: 1fr; }
+          .w-svc7 { min-height: 160px; padding: 20px 16px; }
+          .w-svc7:nth-child(n) { border-right: none; }
+        }
       `}</style>
 
       <div className="w-section-head">
