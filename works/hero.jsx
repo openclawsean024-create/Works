@@ -57,7 +57,9 @@ const WHero = () => {
   const safeIdx = idx % featured.length
   const s = featured[safeIdx]
   // Resolve hero image: customs override → default placeholder
-  const heroImg = s.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[s.num])
+  // Use the hero featured set (hero1..hero4) for variety, then case default
+  const heroList = window.WORKS_DEFAULT_IMAGES?.hero || []
+  const heroImg = s.img || heroList[safeIdx] || window.WORKS_DEFAULT_IMAGES?.cases?.[s.num]
 
   return (
     <section id="w-home" className="w-hero">
@@ -99,11 +101,13 @@ const WHero = () => {
         .w-hero h1 {
           font-family: "Noto Serif TC", serif;
           font-weight: 600;
-          font-size: clamp(72px, 9vw, 156px);
-          line-height: 0.92;
-          letter-spacing: -0.025em;
+          font-size: clamp(40px, 9vw, 156px);
+          line-height: 0.95;
+          letter-spacing: -0.03em;
           margin: 0;
           max-width: 1500px;
+          overflow-wrap: break-word;
+          word-break: break-word;
         }
         .w-hero h1 .y { color: var(--w-accent); }
         .w-hero h1 .it { font-style: italic; font-weight: 400; color: var(--w-text-mute); }

@@ -88,12 +88,44 @@ const WHighlights = () => {
         }
         .w-hl-tags span {
           font-family: "Inter", sans-serif;
-          font-size: 11px;
-          padding: 6px 12px;
+          font-size: 13px;
+          padding: 8px 14px;
           border: 1px solid var(--w-line);
           color: var(--w-text-soft);
           letter-spacing: 0.04em;
           transition: border-color .3s, color .3s;
+        }
+
+        /* === MOBILE === */
+        @media (max-width: 768px) {
+          .w-hl-head {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding-bottom: 32px;
+            margin-bottom: 32px;
+          }
+          .w-hl-head h2 { font-size: 42px; }
+          .w-hl-head .right { font-size: 16px; line-height: 1.7; }
+
+          .w-hl-grid { grid-template-columns: 1fr; }
+          .w-hl-card {
+            padding: 32px 24px;
+            border-right: none;
+          }
+          .w-hl-card:nth-child(2n) { border-right: none; }
+          .w-hl-num { font-size: 13px; margin-bottom: 16px; }
+          .w-hl-zh { font-size: 30px; line-height: 1.2; margin-bottom: 10px; }
+          .w-hl-en { font-size: 13px; letter-spacing: 0.18em; margin-bottom: 18px; }
+          .w-hl-desc { font-size: 16px; line-height: 1.75; margin-bottom: 24px; }
+          .w-hl-tags { gap: 8px; }
+          .w-hl-tags span { font-size: 14px; padding: 8px 14px; }
+        }
+        @media (max-width: 480px) {
+          .w-hl-head h2 { font-size: 36px; }
+          .w-hl-card { padding: 28px 20px; }
+          .w-hl-zh { font-size: 26px; }
+          .w-hl-en { font-size: 12px; }
+          .w-hl-tags span { font-size: 13px; padding: 7px 12px; }
         }
       `}</style>
 
@@ -111,17 +143,21 @@ const WHighlights = () => {
       </div>
 
       <div className="w-hl-grid">
-        {D.highlights.map(h => (
-          <article key={h.num} className="w-hl-card">
-            <div className="w-hl-num">— PILLAR / {h.num} —</div>
-            <h3 className="w-hl-zh">{h.zh}</h3>
-            <div className="w-hl-en">{h.en}</div>
-            <p className="w-hl-desc">{h.desc}</p>
-            <div className="w-hl-tags">
-              {h.tags.map(t => <span key={t}>{t}</span>)}
-            </div>
-          </article>
-        ))}
+        {D.highlights.map(h => {
+          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || ''
+          return (
+            <article key={h.num} className="w-hl-card">
+              {hi && <div className="w-hl-card-bg" style={{backgroundImage: `url('${hi}')`}} />}
+              <div className="w-hl-num">— PILLAR / {h.num} —</div>
+              <h3 className="w-hl-zh">{h.zh}</h3>
+              <div className="w-hl-en">{h.en}</div>
+              <p className="w-hl-desc">{h.desc}</p>
+              <div className="w-hl-tags">
+                {h.tags.map(t => <span key={t}>{t}</span>)}
+              </div>
+            </article>
+          )
+        })}
       </div>
     </section>
   );
