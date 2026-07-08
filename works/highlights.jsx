@@ -144,10 +144,10 @@ const WHighlights = () => {
 
       <div className="w-hl-grid">
         {D.highlights.map(h => {
-          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H${h.num}`] || ''
+          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H${h.num}`] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H0${h.num}`] || ''
           return (
             <article key={h.num} className="w-hl-card">
-              {hi && <div className="w-hl-card-bg" style={{backgroundImage: `url('${hi}')`}} />}
+              <div className="w-hl-card-bg" style={hi ? {backgroundImage: `url('${hi}')`} : {}} />
               <div className="w-hl-num">— PILLAR / {h.num} —</div>
               <h3 className="w-hl-zh">{h.zh}</h3>
               <div className="w-hl-en">{h.en}</div>
