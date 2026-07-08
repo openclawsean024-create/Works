@@ -144,7 +144,7 @@ const WHighlights = () => {
 
       <div className="w-hl-grid">
         {D.highlights.map(h => {
-          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || ''
+          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H${h.num}`] || ''
           return (
             <article key={h.num} className="w-hl-card">
               {hi && <div className="w-hl-card-bg" style={{backgroundImage: `url('${hi}')`}} />}
