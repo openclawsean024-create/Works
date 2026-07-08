@@ -178,22 +178,21 @@ const WHero = () => {
         <div className="w-hero-meta w-mono">
           <span>★ WORKS · 沃克思國際</span>
           <span>EVENT · DESIGN · MARKETING</span>
-          <span>— 2026 EDITION</span>
+          <span>— EST. 2024 · TAIPEI</span>
         </div>
 
         <h1>
-          光<span className="it">、</span>聲<span className="it">、</span>人<span className="it">、</span><br/>
-          一場活動的<br/>
-          <span className="y">每一秒</span>都被計算。
+          你的<em>線下活動</em><br/>
+          <span className="y">神隊友</span>。
         </h1>
       </div>
 
       <div className="w-hero-foot">
         <div>
-          <div className="w-eyebrow" style={{marginBottom: 20}}>FROM PORTFOLIO</div>
+          <div className="w-eyebrow" style={{marginBottom: 20}}>FOUR PILLARS</div>
           <p className="w-hero-tagline">
-            從一張提案簡報到收場那一刻，<br/>
-            我們是同一支團隊。
+            從精準人力到現場整合，<br/>
+            一站完美落地。
           </p>
         </div>
 
@@ -219,7 +218,11 @@ const WHero = () => {
           <div className="w-hero-cta-lab">START A PROJECT →</div>
           <button className="w-btn"
                   onClick={() => document.getElementById('w-contact')?.scrollIntoView({behavior:'smooth'})}>
-            聯絡我們 / CONTACT
+            獲取專案報價 / QUOTE
+          </button>
+          <button className="w-btn-ghost"
+                  onClick={() => document.getElementById('w-case')?.scrollIntoView({behavior:'smooth'})}>
+            瀏覽精選實績 / PORTFOLIO
           </button>
         </div>
       </div>

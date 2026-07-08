@@ -18,8 +18,8 @@ const WORKS_DATA = {
     en: 'WORKS',
     full: '沃克思國際有限公司',
     fullEn: 'WORKS INTERNATIONAL CO., LTD.',
-    tagline: '一場活動，每一秒都被計算。',
-    taglineEn: 'When the light hits, the room holds its breath.',
+    tagline: '你的線下活動神隊友。',
+    taglineEn: 'From precise manpower to on-site integration — one-stop landing.',
     estab: '2024',
     address: '臺北市中正區開封街一段 66 號 5 樓',
     addressEn: '5F, No. 66, Sec. 1, Kaifeng St., Zhongzheng Dist., Taipei',
@@ -36,6 +36,38 @@ const WORKS_DATA = {
     { id: 'news',    zh: '消息公告', en: 'NEWS' },
     { id: 'contact', zh: '聯絡我們', en: 'CONTACT' },
   ],
+  // PDF 區塊 2：核心專長 — 4 大關鍵能力亮點
+  highlights: [
+    {
+      num: '01',
+      zh: '大型展會的臨危不亂',
+      en: 'LARGE-SCALE EXHIBITIONS',
+      desc: '萬人展會的 0 失誤法則。從動線精算、人流極大化到硬體雙備援，我們具備高壓環境下的危機預判與即時應變力。',
+      tags: ['#台北國際電玩展', '#任天堂', '#蔚藍檔案'],
+    },
+    {
+      num: '02',
+      zh: '高端活動的細節把控',
+      en: 'HIGH-END EVENT CRAFTSMANSHIP',
+      desc: '細節控的專案美學。無論是企業年會或黑客松，我們以「15 分鐘」為單位的精準控場，確保視覺設計與現場執行的完美對齊。',
+      tags: ['#和泰黑客松', '#Msonic見面會', '#統包統籌'],
+    },
+    {
+      num: '03',
+      zh: '品牌專屬執行戰隊',
+      en: 'DEDICATED BRAND SQUAD',
+      desc: '拒絕平庸臨時人力。出勤人員皆受過嚴格培訓，並配置專屬督導 (Team Leader) 盯場，守護您品牌第一線的專業形象。',
+      tags: ['#全障運媒體接待', '#Google Gemini校園推廣'],
+    },
+    {
+      num: '04',
+      zh: '全感官影音與禮品整合',
+      en: 'FULL-SENSORY CONTENT & GIFTING',
+      desc: '將線下感動無限延伸。串聯頂尖影像團隊與客製禮贈品資源，從現場發送到社群短影音擴散，一站式創造最大綜效。',
+      tags: ['#Reels短影音行銷', '#企業公關伴手禮'],
+    },
+  ],
+  // 既有：4 大業務領域（保留 — 業務範圍）
   servicePillars: [
     {
       num: '01',
@@ -71,8 +103,26 @@ const WORKS_DATA = {
     { num: '06', zh: '舞台工程',  en: 'Stage Works',           kw: ['結構設計', '施工', '安全認證', '客製場景'] },
     { num: '07', zh: '燈光音響',  en: 'Lighting & Sound',      kw: ['Moving light', 'Line array', '操作工程師', '租賃'] },
   ],
+  // PDF 區塊 4：精選實績 — 4 個 PDF 指定案例 + 既有案例
   cases: [
-    // img: 'images/cases/檔名.jpg'  ← 填圖片路徑；不填則顯示佔位格
+    // PDF 區塊 4 精選實績（4 個）
+    { num: 'P01', year: '2025', cat: 'CAMPUS', img: null,
+      zh: 'Dcard × Google Gemini 校園推廣',
+      en: 'Dcard × Google Gemini Campus Activation',
+      tags: ['#活動規劃', '#專業人力', '#高效推廣'] },
+    { num: 'P02', year: '2024', cat: 'EVENT',  img: null,
+      zh: '2024 台北國際電玩展（任天堂 / 蔚藍檔案）',
+      en: 'Taipei Game Show 2024 (Nintendo / Blue Archive)',
+      tags: ['#萬人展會', '#大型統籌', '#硬體規劃'] },
+    { num: 'P03', year: '2024', cat: 'BRAND',  img: null,
+      zh: '和泰集團 和泰黑客松 MAAS',
+      en: 'Hotai × Hotai Hackathon MAAS',
+      tags: ['#高端企業活動', '#細節把控', '#統包統籌'] },
+    { num: 'P04', year: '2025', cat: 'BRAND',  img: null,
+      zh: 'Jusky 街星 × 創戰神 推廣活動',
+      en: 'Jusky × Chou Zhan Shen Promo Activation',
+      tags: ['#硬體設計', '#快閃統籌', '#陳列佈置'] },
+    // 既有 12 個案例（保留）
     { num: '0101', year: '2026', cat: 'CAMPUS',   img: null, zh: '新竹陽明交通大學春季校園博覽會', en: 'NYCU Spring Career Fair' },
     { num: '0102', year: '2026', cat: 'BRAND',    img: null, zh: 'WBC × Foodpanda 推廣活動',       en: 'WBC × Foodpanda Activation' },
     { num: '0103', year: '2026', cat: 'EVENT',    img: null, zh: '嘉義燈節 — 中華電信主攤位',      en: 'Chiayi Lantern Festival × CHT' },
@@ -94,10 +144,40 @@ const WORKS_DATA = {
     { date: '2025.12.20', tag: 'PROJECT', zh: 'DCARD 年貨大展圓滿結束',         en: 'DCARD Sampling Wrapped' },
     { date: '2025.10.15', tag: 'COMPANY', zh: '沃克思加入台北市活動公會',       en: 'Joined Taipei Event Guild' },
   ],
+  // PDF 區塊 4 標題：「精選實績（Portfolio）（上方放合作品牌 LOGO 輪播）」
+  // LOGO 輪播名單 — 用 typography 呈現（無授權圖）
+  clientLogos: [
+    'DCARD', 'GOOGLE', 'GEMINI', 'VOLVO', 'AMWAY 安麗',
+    'NINTENDO 任天堂', 'BLUE ARCHIVE 蔚藍檔案', 'CHT 中華電信', 'HOTAI 和泰', 'JUSKY',
+    'FOODPANDA', 'SUPER JUNIOR', '陽明交大 NYCU', 'WBC', '一番賞',
+  ],
+  // 既有 clients（保留給 footer / marquee）
   clients: [
     'DCARD', 'FOODPANDA', 'CHT 中華電信', 'VOLVO', 'AMWAY 安麗',
     'SUPER JUNIOR', '陽明交通大學', 'WBC', '洽洽瓜子', '一番賞',
   ],
+  // PDF 區塊 3：為什麼選擇沃克思 — 3 大核心優勢
+  whyUs: [
+    {
+      num: '01',
+      zh: '頂尖品牌信任',
+      en: 'TRUSTED BY TOP BRANDS',
+      desc: '從任天堂、Google 到和泰集團，累積百場國家級與跨國品牌實戰經驗。',
+    },
+    {
+      num: '02',
+      zh: '單一窗口整合',
+      en: 'SINGLE POINT OF CONTACT',
+      desc: '一個群組搞定人力、設計、影音與禮品，大幅降低溝通成本。',
+    },
+    {
+      num: '03',
+      zh: '零失誤執行力',
+      en: 'ZERO-DEFECT EXECUTION',
+      desc: '系統化 SOP 與硬體／人力雙重備援機制，將現場風險降至最低。',
+    },
+  ],
+  // 既有：服務競爭力 4 條（保留 — 細節補充）
   competencies: [
     { num: '01', zh: '從概念到收場', en: 'CONCEPT → WRAP', desc: '不只是執行 — 從第一張提案簡報到收場那一刻，我們是同一支團隊。' },
     { num: '02', zh: '設計與執行同源', en: 'DESIGN-LED EXECUTION', desc: '平面 / 3D / 空間設計 in-house，視覺一致性從紙本延續到現場。' },
