@@ -2,6 +2,16 @@
 
 const WHighlights = () => {
   const D = window.WORKS_DATA;
+  const hlMap = window.WORKS_DEFAULT_IMAGES?.highlights || {}
+  const refs = React.useRef([])
+  React.useEffect(() => {
+    D.highlights.forEach((h, i) => {
+      const el = refs.current[i]
+      if (!el) return
+      const url = hlMap[h.num] || hlMap['H' + h.num] || hlMap['H0' + h.num]
+      if (url) el.style.backgroundImage = `url('${url}')`
+    })
+  }, [])
   return (
     <section id="w-highlights" className="w-section" style={{background: 'var(--w-ink-2)'}}>
       <style>{`
@@ -143,21 +153,18 @@ const WHighlights = () => {
       </div>
 
       <div className="w-hl-grid">
-        {D.highlights.map(h => {
-          const hi = window.WORKS_DEFAULT_IMAGES?.highlights?.[h.num] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H${h.num}`] || window.WORKS_DEFAULT_IMAGES?.highlights?.[`H0${h.num}`] || ''
-          return (
-            <article key={h.num} className="w-hl-card">
-              <div className="w-hl-card-bg" style={hi ? {backgroundImage: `url('${hi}')`} : {}} />
-              <div className="w-hl-num">— PILLAR / {h.num} —</div>
-              <h3 className="w-hl-zh">{h.zh}</h3>
-              <div className="w-hl-en">{h.en}</div>
-              <p className="w-hl-desc">{h.desc}</p>
-              <div className="w-hl-tags">
-                {h.tags.map(t => <span key={t}>{t}</span>)}
-              </div>
-            </article>
-          )
-        })}
+        {D.highlights.map((h, i) => (
+          <article key={h.num} className="w-hl-card">
+            <div className="w-hl-card-bg" ref={el => refs.current[i] = el} />
+            <div className="w-hl-num">— PILLAR / {h.num} —</div>
+            <h3 className="w-hl-zh">{h.zh}</h3>
+            <div className="w-hl-en">{h.en}</div>
+            <p className="w-hl-desc">{h.desc}</p>
+            <div className="w-hl-tags">
+              {h.tags.map(t => <span key={t}>{t}</span>)}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
