@@ -24,9 +24,15 @@ const WCases = () => {
 
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
   const [cases, setCases] = React.useState(() => {
-    const c = getEffectiveCases()
-    window.__worksCasesCache = c
-    return c
+    try {
+      const c = getEffectiveCases()
+      window.__worksCasesCache = c
+      console.log('[cases] init cache len:', c.length)
+      return c
+    } catch (e) {
+      console.error('[cases] init err:', e)
+      return []
+    }
   })
   const [activeCase, setActiveCase] = React.useState(null) // modal state
 
