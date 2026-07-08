@@ -82,11 +82,11 @@ const WCompetencies = () => {
         .w-comp-desc { font-family: "Noto Serif TC", serif; font-size: 14px; line-height: 1.75; color: var(--w-text-soft); }
       `}</style>
       <div className="w-comp-head">
-        <h3>服務競爭力 / Why WORKS</h3>
-        <div className="w-meta">[ 04 STRENGTHS ]</div>
+        <h3>為什麼選擇沃克思 / Why WORKS</h3>
+        <div className="w-meta">[ 03 STRENGTHS ]</div>
       </div>
-      <div className="w-comp-grid">
-        {D.competencies.map(c => (
+      <div className="w-comp-grid" style={{gridTemplateColumns: 'repeat(3, 1fr)'}}>
+        {D.whyUs.map(c => (
           <div key={c.num} className="w-comp">
             <div className="w-comp-num">— {c.num} —</div>
             <h4 className="w-comp-zh">{c.zh}</h4>
@@ -101,17 +101,49 @@ const WCompetencies = () => {
 
 const WClientsMarquee = () => {
   const D = window.WORKS_DATA;
-  const list = [...D.clients, ...D.clients];
+  const list = [...D.clientLogos, ...D.clientLogos];
   return (
     <section style={{padding: '64px 0', borderTop: '1px solid var(--w-line)', borderBottom: '1px solid var(--w-line)', overflow: 'hidden', background: 'var(--w-ink)'}}>
       <style>{`
-        .w-marq-lab { padding: 0 64px 24px; display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--w-text-mute); text-transform: uppercase; }
-        .w-marq-track { display: flex; gap: 80px; animation: w-marquee 50s linear infinite; white-space: nowrap; font-family: "Noto Serif TC", serif; font-weight: 600; font-size: 64px; letter-spacing: 0.04em; }
-        .w-marq-track .dot { color: var(--w-accent); margin: 0 8px; }
+        .w-marq-lab {
+          padding: 0 64px 24px;
+          display: flex; justify-content: space-between;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          color: var(--w-text-mute);
+          text-transform: uppercase;
+        }
+        .w-marq-track {
+          display: flex; gap: 80px;
+          animation: w-marquee 50s linear infinite;
+          white-space: nowrap;
+          font-family: "Noto Serif TC", serif;
+          font-weight: 700;
+          font-size: 56px;
+          letter-spacing: 0.04em;
+          color: var(--w-text);
+        }
+        .w-marq-track .logo {
+          display: inline-flex; align-items: center; gap: 12px;
+          padding: 8px 24px;
+          border: 1.5px solid var(--w-line);
+          transition: border-color .3s, color .3s;
+        }
+        .w-marq-track .logo:hover { border-color: var(--w-accent); color: var(--w-accent); }
+        .w-marq-track .dot { color: var(--w-accent); margin: 0 8px; font-size: 32px; }
       `}</style>
-      <div className="w-marq-lab"><span>★ TRUSTED BY / 合作夥伴</span><span>{D.clients.length}+ BRANDS</span></div>
+      <div className="w-marq-lab">
+        <span>★ TRUSTED BY / 合作品牌</span>
+        <span>{D.clientLogos.length}+ BRANDS</span>
+      </div>
       <div className="w-marq-track">
-        {list.map((c, i) => (<React.Fragment key={i}><span>{c}</span><span className="dot">★</span></React.Fragment>))}
+        {list.map((c, i) => (
+          <React.Fragment key={i}>
+            <span className="logo">{c}</span>
+            <span className="dot">★</span>
+          </React.Fragment>
+        ))}
       </div>
     </section>
   );
