@@ -9,7 +9,17 @@ const WHighlights = () => {
       const el = refs.current[i]
       if (!el) return
       const url = hlMap[h.num] || hlMap['H' + h.num] || hlMap['H0' + h.num]
-      if (url) el.style.backgroundImage = `url('${url}')`
+      if (url) {
+        el.style.position = 'absolute'
+        el.style.inset = '0'
+        el.style.backgroundImage = `url('${url}')`
+        el.style.backgroundSize = 'cover'
+        el.style.backgroundPosition = 'center'
+        el.style.opacity = '0.35'
+        el.style.zIndex = '0'
+        el.style.filter = 'grayscale(0.4) contrast(1.15) brightness(0.9)'
+        el.style.pointerEvents = 'none'
+      }
     })
   }, [])
   return (
