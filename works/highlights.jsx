@@ -5,22 +5,20 @@ const WHighlights = () => {
   const hlMap = window.WORKS_DEFAULT_IMAGES?.highlights || {}
   const refs = React.useRef([])
   React.useEffect(() => {
-    D.highlights.forEach((h, i) => {
-      const el = refs.current[i]
-      if (!el) return
-      const url = hlMap[h.num] || hlMap['H' + h.num] || hlMap['H0' + h.num]
-      if (url) {
-        el.style.position = 'absolute'
-        el.style.inset = '0'
-        el.style.backgroundImage = `url('${url}')`
-        el.style.backgroundSize = 'cover'
-        el.style.backgroundPosition = 'center'
-        el.style.opacity = '0.35'
-        el.style.zIndex = '0'
-        el.style.filter = 'grayscale(0.4) contrast(1.15) brightness(0.9)'
-        el.style.pointerEvents = 'none'
-      }
-    })
+    const apply = () => {
+      D.highlights.forEach((h, i) => {
+        const el = refs.current[i]
+        if (!el) return
+        const url = hlMap[h.num] || hlMap['H' + h.num] || hlMap['H0' + h.num]
+        if (url) {
+          el.setAttribute('style',
+            "position:absolute !important;inset:0 !important;background:url('" + url + "') center/cover no-repeat !important;opacity:0.35 !important;z-index:0 !important;filter:grayscale(0.4) contrast(1.15) brightness(0.9) !important;pointer-events:none !important;")
+        }
+      })
+    }
+    apply()
+    setTimeout(apply, 100)
+    setTimeout(apply, 500)
   }, [])
   return (
     <section id="w-highlights" className="w-section" style={{background: 'var(--w-ink-2)'}}>
