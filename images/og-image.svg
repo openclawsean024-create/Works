@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="g1" cx="25%" cy="15%" r="60%">
+      <stop offset="0%" stop-color="#E05720" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="80%" cy="90%" r="60%">
+      <stop offset="0%" stop-color="#FDA200" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#000000"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+  <text x="80" y="160" font-family="JetBrains Mono, monospace" font-size="22"
+        fill="#E05720" letter-spacing="6">★ WORKS · 沃克思國際</text>
+  <text x="80" y="220" font-family="JetBrains Mono, monospace" font-size="18"
+        fill="rgba(245,242,236,0.6)" letter-spacing="4">EVENT · DESIGN · MARKETING — EST. 2024 · TAIPEI</text>
+  <text x="80" y="380" font-family="Noto Serif TC, serif" font-size="96" font-weight="700"
+        fill="#F5F2EC" letter-spacing="-3">你的</text>
+  <text x="240" y="380" font-family="Noto Serif TC, serif" font-size="96" font-weight="700"
+        font-style="italic" fill="#FDA200" letter-spacing="-3">線下活動</text>
+  <text x="80" y="480" font-family="Noto Serif TC, serif" font-size="96" font-weight="700"
+        fill="#E05720" letter-spacing="-3">神隊友。</text>
+  <text x="80" y="570" font-family="Noto Serif TC, serif" font-size="22"
+        fill="rgba(245,242,236,0.7)" letter-spacing="2">從精準人力到現場整合，一站完美落地。</text>
+</svg>

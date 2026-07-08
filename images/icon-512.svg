@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#000000"/>
+  <text x="256" y="320" font-family="Noto Serif TC, serif" font-size="240" font-weight="700"
+        text-anchor="middle" fill="#E05720" letter-spacing="-10">沃</text>
+  <text x="256" y="420" font-family="Inter, sans-serif" font-size="54" font-weight="600"
+        text-anchor="middle" fill="#F5F2EC" letter-spacing="8">WORKS</text>
+  <text x="256" y="455" font-family="JetBrains Mono, monospace" font-size="16" font-weight="400"
+        text-anchor="middle" fill="rgba(245,242,236,0.6)" letter-spacing="4">EST. 2024 · TAIPEI</text>
+</svg>

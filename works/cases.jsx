@@ -1,4 +1,4 @@
-// WORKS — Cases (filterable grid)
+// WORKS — Cases (filterable grid) — Lazy load images via IntersectionObserver
 
 const WCases = () => {
   const D = window.WORKS_DATA;
@@ -24,6 +24,27 @@ const WCases = () => {
 
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
   const [cases, setCases] = React.useState(getEffectiveCases());
+
+  // Lazy-load background images with IntersectionObserver
+  const imgRefs = React.useRef([]);
+  React.useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: load all immediately
+      imgRefs.current.forEach(el => { if (el && el.dataset.bg) el.style.backgroundImage = `url('${el.dataset.bg}')` })
+      return
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target
+          if (el.dataset.bg) el.style.backgroundImage = `url('${el.dataset.bg}')`
+          obs.unobserve(el)
+        }
+      })
+    }, { rootMargin: '200px' })
+    imgRefs.current.forEach(el => { if (el) obs.observe(el) })
+    return () => obs.disconnect()
+  }, [cases, filter])
 
   // Re-read on focus (in case admin wrote to localStorage in another tab)
   React.useEffect(() => {
@@ -184,14 +205,15 @@ const WCases = () => {
       </div>
 
       <div className="w-case-grid">
-        {list.map(c => {
+        {list.map((c, i) => {
           // Resolve image: customs override → default placeholder
           const img = c.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[c.num])
           return (
             <article key={c.num} className="w-case">
               <div
+                ref={el => imgRefs.current[i] = el}
+                data-bg={img || ''}
                 className={'w-case-img' + (img ? '' : ' no-photo')}
-                style={img ? {backgroundImage: `url('${img}')`} : {}}
               >
                 {!img && <span className="w-case-img-tag">{c.cat} · {c.year}</span>}
               </div>

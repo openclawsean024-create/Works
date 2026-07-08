@@ -1,0 +1,7 @@
+# WORKS — Robots.txt
+# Allow all major crawlers
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://openclawsean024-create.github.io/Works/sitemap.xml
