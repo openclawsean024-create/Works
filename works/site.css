@@ -367,23 +367,24 @@
 }
 
 /* === Highlights card background image === */
-.w-hl-card { position: relative; overflow: hidden; isolation: isolate; }
+.w-hl-card { position: relative; overflow: hidden; z-index: auto; }
 .w-hl-card-bg {
-  position: absolute; inset: 0;
+  position: absolute !important; inset: 0;
   background-size: cover;
   background-position: center;
   opacity: 0.35;
   filter: grayscale(0.4) contrast(1.15) brightness(0.9);
   transition: opacity .4s, transform .6s, filter .4s;
-  z-index: 0;
+  z-index: 0 !important;
+  pointer-events: none;
 }
 .w-hl-card::before {
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
-  z-index: 0;
+  z-index: 0 !important;
   pointer-events: none;
 }
 .w-hl-card:hover .w-hl-card-bg { opacity: 0.55; transform: scale(1.04); filter: grayscale(0) contrast(1) brightness(1); }
-.w-hl-card > * { position: relative; z-index: 2; }
-.w-hl-card .w-hl-zh, .w-hl-card .w-hl-en, .w-hl-card .w-hl-desc, .w-hl-card .w-hl-tags, .w-hl-card .w-hl-num { position: relative; z-index: 2; }
+.w-hl-card > * { position: relative; z-index: 2 !important; }
+.w-hl-card .w-hl-zh, .w-hl-card .w-hl-en, .w-hl-card .w-hl-desc, .w-hl-card .w-hl-tags, .w-hl-card .w-hl-num { position: relative; z-index: 2 !important; }
