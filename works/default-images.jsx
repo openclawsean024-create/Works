@@ -6,46 +6,79 @@
 //
 // Format: https://picsum.photos/seed/{seed}/{w}/{h}
 //
-// These are PLACEHOLDER images. The owner can swap each one with
-// a real photo via the admin backend at any time.
+// IMPORTANT: picsum is RANDOM photos (Flickr pool) — we can't
+// keyword-filter for "event photos only". These are placeholders.
+// The admin can:
+//   1. Re-roll all default seeds via the "重新隨機" button in admin
+//   2. Upload real photos per case / asset
 
 const PICSEED = (key, w = 800, h = 1000) => `https://picsum.photos/seed/${encodeURIComponent(key)}/${w}/${h}`
 
-// Case image map: num → picsum URL
-// Each case gets a unique seed so the photos are visually distinct.
-const CASE_DEFAULT_IMAGES = {
-  // PDF 精選實績 (P01–P04) — featured in hero
-  P01:  PICSEED('works-p01-gemini-campus'),
-  P02:  PICSEED('works-p02-gaming-convention'),
-  P03:  PICSEED('works-p03-hackathon'),
-  P04:  PICSEED('works-p04-street-marketing'),
-
-  // 12 default cases (0101–0112)
-  '0101': PICSEED('works-0101-campus-fair'),
-  '0102': PICSEED('works-0102-baseball-promo'),
-  '0103': PICSEED('works-0103-lantern-festival'),
-  '0104': PICSEED('works-0104-picnic'),
-  '0105': PICSEED('works-0105-kpop-popup'),
-  '0106': PICSEED('works-0106-sample-booth'),
-  '0107': PICSEED('works-0107-campus-event'),
-  '0108': PICSEED('works-0108-lottery'),
-  '0109': PICSEED('works-0109-brand-experience'),
-  '0110': PICSEED('works-0110-art-auction'),
-  '0111': PICSEED('works-0111-family-sports'),
-  '0112': PICSEED('works-0112-campus-brand'),
+// Each entry: { num, seed }
+// The seed is "語意化" (e.g. "outdoor-festival-1018") so the
+// intent is clear, and we add a numeric suffix so re-rolling
+// produces a visibly different image.
+const CASE_SEEDS = {
+  P01:  'outdoor-campus-event-1042',
+  P02:  'expo-convention-stage-1058',
+  P03:  'hackathon-corporate-1091',
+  P04:  'street-marketing-booth-1067',
+  '0101': 'campus-festival-outdoor-1023',
+  '0102': 'baseball-crowd-event-1071',
+  '0103': 'lantern-festival-night-1085',
+  '0104': 'outdoor-picnic-garden-1019',
+  '0105': 'kpop-concert-stage-1044',
+  '0106': 'sample-booth-marketing-1063',
+  '0107': 'campus-event-outdoor-1088',
+  '0108': 'lottery-event-crowd-1027',
+  '0109': 'brand-experience-stage-1053',
+  '0110': 'art-auction-gallery-1076',
+  '0111': 'family-sports-event-1031',
+  '0112': 'campus-brand-activation-1099',
 }
 
-// Image assets (non-case)
-const ASSET_DEFAULT_IMAGES = {
-  // 720x900 portrait for About team
-  about_team:  PICSEED('works-about-team', 720, 900),
-  // 800x600 brand image
-  about_brand: PICSEED('works-about-brand', 800, 600),
+const ASSET_SEEDS = {
+  about_team:  'workshop-team-collaboration-1086',
+  about_brand: 'brand-identity-stage-1047',
+}
+
+function buildCaseMap() {
+  const out = {}
+  for (const [num, seed] of Object.entries(CASE_SEEDS)) {
+    out[num] = PICSEED(seed)
+  }
+  return out
+}
+
+function buildAssetMap() {
+  const out = {}
+  for (const [key, seed] of Object.entries(ASSET_SEEDS)) {
+    out[key] = PICSEED(seed, key === 'about_team' ? 720 : 800, key === 'about_team' ? 900 : 600)
+  }
+  return out
+}
+
+// Re-roll seeds by appending a random suffix.
+// Called by admin "重新隨機預設圖" button.
+function rerollSeeds() {
+  const ts = Date.now().toString().slice(-4)
+  for (const num of Object.keys(CASE_SEEDS)) {
+    CASE_SEEDS[num] = CASE_SEEDS[num].replace(/-\d{4}$/, '') + '-' + ts
+  }
+  for (const key of Object.keys(ASSET_SEEDS)) {
+    ASSET_SEEDS[key] = ASSET_SEEDS[key].replace(/-\d{4}$/, '') + '-' + ts
+  }
 }
 
 window.WORKS_DEFAULT_IMAGES = {
-  cases: CASE_DEFAULT_IMAGES,
-  assets: ASSET_DEFAULT_IMAGES,
-  // Helper to build a picsum URL for any seed
+  get cases() { return buildCaseMap() },
+  get assets() { return buildAssetMap() },
+  // Force rebuild (after reroll)
+  refresh() {
+    return { cases: buildCaseMap(), assets: buildAssetMap() }
+  },
   picsum: PICSEED,
+  rerollSeeds,
+  // Expose seeds so admin can re-roll
+  _seeds: { cases: CASE_SEEDS, assets: ASSET_SEEDS },
 }
