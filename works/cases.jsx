@@ -45,36 +45,6 @@ const WCases = () => {
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [activeCase])
 
-  // Attach click handlers + data-num to .w-case articles (DOM delegation, more reliable than JSX onClick)
-  React.useEffect(() => {
-    // Assign data-num to all .w-case articles (workaround for babel dropping JSX data- attrs)
-    const applyDataNum = () => {
-      const arts = document.querySelectorAll('.w-case')
-      const cache = window.__worksCasesCache || []
-      arts.forEach((art, i) => {
-        if (!art.dataset.num && cache[i]) art.dataset.num = cache[i].num
-        if (!art.style.cursor) art.style.cursor = 'pointer'
-      })
-    }
-    applyDataNum()
-    const t1 = setTimeout(applyDataNum, 50)
-    const t2 = setTimeout(applyDataNum, 300)
-
-    const handler = (e) => {
-      const art = e.target.closest('.w-case')
-      if (!art) return
-      const num = art.dataset.num
-      if (!num) return
-      const c = (window.__worksCasesCache || []).find(x => x.num === num)
-      if (c) setActiveCase(c)
-    }
-    document.addEventListener('click', handler)
-    return () => {
-      document.removeEventListener('click', handler)
-      clearTimeout(t1); clearTimeout(t2)
-    }
-  }, [cases, filter])
-
   // Lazy-load background images with IntersectionObserver
   const imgRefs = React.useRef([]);
   React.useEffect(() => {
@@ -105,8 +75,32 @@ const WCases = () => {
 
   const list = filter === 'ALL' ? cases : cases.filter(c => c.cat === filter);
 
-  // Expose cases globally so the delegated click handler can find them
-  React.useEffect(() => { window.__worksCasesCache = cases }, [cases])
+  // Expose cases globally + delegated handlers for the document-level listener
+  React.useEffect(() => {
+    window.__worksCasesCache = cases
+    window.__worksOpenCaseModal = (num) => {
+      const c = cases.find(x => x.num === num)
+      if (c) setActiveCase(c)
+    }
+    window.__worksCloseCaseModal = () => setActiveCase(null)
+    window.__worksSetCaseFilter = (cat) => {
+      const valid = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION']
+      if (valid.includes(cat)) setFilter(cat)
+    }
+  }, [cases])
+
+  // Assign data-num to articles (babel strips JSX data-attrs)
+  React.useEffect(() => {
+    const apply = () => {
+      const arts = document.querySelectorAll('.w-case')
+      const cache = window.__worksCasesCache || []
+      arts.forEach((art, i) => { if (cache[i] && !art.dataset.num) art.dataset.num = cache[i].num })
+    }
+    apply()
+    const t1 = setTimeout(apply, 50)
+    const t2 = setTimeout(apply, 300)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [cases, filter])
 
   return (
     <section id="w-case" className="w-section" style={{background: 'var(--w-ink)'}}>
@@ -151,7 +145,7 @@ const WCases = () => {
           border: 1px solid var(--w-line);
           overflow: hidden;
           aspect-ratio: 4/5;
-          cursor: pointer;
+          cursor: pointer !important;
           transition: transform .4s cubic-bezier(.2,.7,.2,1), border-color .25s;
         }
         .w-case:hover { transform: translateY(-6px); border-color: var(--w-accent); }
@@ -384,9 +378,9 @@ const WCases = () => {
       {activeCase && (() => {
         const mImg = activeCase.img || window.WORKS_DEFAULT_IMAGES?.cases?.[activeCase.num]
         return (
-          <div className="w-case-modal" onClick={() => setActiveCase(null)}>
-            <div className="w-case-modal-box" onClick={e => e.stopPropagation()}>
-              <button className="w-case-modal-close" onClick={() => setActiveCase(null)} aria-label="關閉">✕</button>
+          <div className="w-case-modal">
+            <div className="w-case-modal-box">
+              <button className="w-case-modal-close" data-modal-close aria-label="關閉">✕</button>
               <div className="w-case-modal-img" style={mImg ? {backgroundImage: `url('${mImg}')`} : {}} />
               <div className="w-case-modal-body">
                 <div className="w-case-modal-meta">
