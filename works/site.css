@@ -372,9 +372,9 @@
   position: absolute; inset: 0;
   background-size: cover;
   background-position: center;
-  opacity: 0.18;
+  opacity: 0.30;
   transition: opacity .4s, transform .6s;
 }
-.w-hl-card:hover .w-hl-card-bg { opacity: 0.30; transform: scale(1.04); }
+.w-hl-card:hover .w-hl-card-bg { opacity: 0.50; transform: scale(1.04); }
 .w-hl-card > * { position: relative; z-index: 1; }
 .w-hl-card .w-hl-zh, .w-hl-card .w-hl-en, .w-hl-card .w-hl-desc, .w-hl-card .w-hl-tags, .w-hl-card .w-hl-num { position: relative; z-index: 1; }
