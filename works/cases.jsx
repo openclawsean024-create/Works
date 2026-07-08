@@ -4,8 +4,29 @@ const WCases = () => {
   const D = window.WORKS_DATA;
   const [filter, setFilter] = React.useState('ALL');
 
+  // Merge data.jsx defaults with localStorage custom cases
+  // (admin.html writes to these keys)
+  const getEffectiveCases = () => {
+    let customs = [];
+    let deleted = [];
+    try { customs = JSON.parse(localStorage.getItem('works-custom-cases') || '[]') } catch {}
+    try { deleted = JSON.parse(localStorage.getItem('works-deleted-defaults') || '[]') } catch {}
+    const deletedSet = new Set(deleted);
+    const defaults = (D.cases || []).filter((c) => !deletedSet.has(c.num));
+    return [...customs, ...defaults];
+  };
+
   const cats = ['ALL', 'BRAND', 'CAMPUS', 'CONCERT', 'EVENT', 'AUCTION'];
-  const list = filter === 'ALL' ? D.cases : D.cases.filter(c => c.cat === filter);
+  const [cases, setCases] = React.useState(getEffectiveCases());
+
+  // Re-read on mount (in case admin wrote to localStorage in another tab)
+  React.useEffect(() => {
+    const onFocus = () => setCases(getEffectiveCases());
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, []);
+
+  const list = filter === 'ALL' ? cases : cases.filter(c => c.cat === filter);
 
   return (
     <section id="w-case" className="w-section" style={{background: 'var(--w-ink)'}}>
@@ -153,7 +174,7 @@ const WCases = () => {
             </button>
           ))}
         </div>
-        <div className="w-meta">[ {String(list.length).padStart(2, '0')} OF {String(D.cases.length).padStart(2, '0')} ]</div>
+        <div className="w-meta">[ {String(list.length).padStart(2, '0')} OF {String(cases.length).padStart(2, '0')} ]</div>
       </div>
 
       <div className="w-case-grid">

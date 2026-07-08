@@ -164,6 +164,7 @@ const WHeader = ({ active, setActive }) => {
             {n.en}
           </a>
         ))}
+        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', fontSize: '11px' }} title="後台管理">⚙ ADMIN</a>
       </nav>
 
       <button className="w-btn w-header-cta" onClick={go('contact')}>
@@ -180,6 +181,7 @@ const WHeader = ({ active, setActive }) => {
             {n.zh} / {n.en}
           </a>
         ))}
+        <a href="admin.html" target="_blank" rel="noopener" style={{ color: 'var(--w-accent)', textAlign: 'center' }}>⚙ 後台管理 / ADMIN</a>
         <button className="w-btn w-mobile-cta" onClick={go('contact')}>
           獲取專案報價 / QUOTE
         </button>
