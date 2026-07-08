@@ -35,6 +35,20 @@ const WCases = () => {
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [activeCase])
 
+  // Attach click handlers to .w-case articles (DOM delegation, more reliable than JSX onClick)
+  React.useEffect(() => {
+    const handler = (e) => {
+      const art = e.target.closest('.w-case')
+      if (!art) return
+      const num = art.dataset.num
+      if (!num) return
+      const c = (window.__worksCasesCache || []).find(x => x.num === num)
+      if (c) setActiveCase(c)
+    }
+    document.addEventListener('click', handler)
+    return () => document.removeEventListener('click', handler)
+  }, [])
+
   // Lazy-load background images with IntersectionObserver
   const imgRefs = React.useRef([]);
   React.useEffect(() => {
@@ -64,6 +78,9 @@ const WCases = () => {
   }, []);
 
   const list = filter === 'ALL' ? cases : cases.filter(c => c.cat === filter);
+
+  // Expose cases globally so the delegated click handler can find them
+  React.useEffect(() => { window.__worksCasesCache = cases }, [cases])
 
   return (
     <section id="w-case" className="w-section" style={{background: 'var(--w-ink)'}}>
@@ -314,7 +331,7 @@ const WCases = () => {
           // Resolve image: customs override → default placeholder
           const img = c.img || (window.WORKS_DEFAULT_IMAGES?.cases?.[c.num])
           return (
-            <article key={c.num} className="w-case" onClick={() => setActiveCase(c)}>
+            <article key={c.num} className="w-case" data-num={c.num}>
               <div
                 ref={el => imgRefs.current[i] = el}
                 data-bg={img || ''}
